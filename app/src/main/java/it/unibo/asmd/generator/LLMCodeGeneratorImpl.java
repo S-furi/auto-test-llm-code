@@ -1,5 +1,7 @@
 package it.unibo.asmd.generator;
 
+import it.unibo.asmd.generator.prompting.PromptBasedAgent;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;

@@ -1,5 +1,7 @@
 package it.unibo.asmd.generator;
 
+import it.unibo.asmd.generator.prompting.PromptBasedAgent;
+
 import java.util.Optional;
 
 public class LLMCodeGeneratorBuilder {

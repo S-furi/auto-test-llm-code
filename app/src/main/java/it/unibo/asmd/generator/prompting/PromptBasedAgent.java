@@ -1,4 +1,4 @@
-package it.unibo.asmd.generator;
+package it.unibo.asmd.generator.prompting;
 
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatLanguageModel;
@@ -17,7 +17,7 @@ public class PromptBasedAgent {
         return this.model.chat(UserMessage.from(prompt)).aiMessage().text();
     }
 
-    static PromptBasedAgent createOllamaPromptBasedAgent(final String modelName) {
+    public static PromptBasedAgent createOllamaPromptBasedAgent(final String modelName) {
         final ChatLanguageModel model = OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
                 .logRequests(false)
