@@ -22,4 +22,12 @@ public class LLMCodeGeneratorFactory {
                 .ofLanguage(LLMCodeGeneratorBuilder.Language.JAVA)
                 .build();
     }
+
+    public static LLMCodeGenerator createQwenLLMJavaCodeGenerator() {
+        return new LLMCodeGeneratorBuilder()
+                .withQwenAgent()
+                .withDefaultPrePrompt()
+                .ofLanguage(LLMCodeGeneratorBuilder.Language.JAVA)
+                .build();
+    }
 }

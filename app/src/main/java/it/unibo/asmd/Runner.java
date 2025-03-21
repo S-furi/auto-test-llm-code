@@ -2,12 +2,13 @@ package it.unibo.asmd;
 
 import it.unibo.asmd.compiler.DynamicCodeCompiler;
 import it.unibo.asmd.generator.LLMCodeGenerator;
+import it.unibo.asmd.generator.LLMCodeGeneratorFactory;
 
 import java.lang.reflect.InvocationTargetException;
 
 public class Runner {
     public static void main(String[] args) {
-        final var generator = LLMCodeGenerator.createQwenLLMCodeGenerator();
+        final var generator = LLMCodeGeneratorFactory.createQwenLLMJavaCodeGenerator();
         final var testCodeRequirements = "Write a class named \"Onner\" that has an empty constructor and a method named \"getOne\" that returns 1.";
         generator.setPrompt(testCodeRequirements);
         final var generatedCode = generator.generateCodeFromPrompt();
