@@ -7,7 +7,7 @@ import dev.langchain4j.model.ollama.OllamaChatModel;
 import java.util.Objects;
 
 public class PromptBasedAgent {
-    private final ChatLanguageModel model;
+    protected final ChatLanguageModel model;
 
     public PromptBasedAgent(final ChatLanguageModel model) {
         this.model = model;
