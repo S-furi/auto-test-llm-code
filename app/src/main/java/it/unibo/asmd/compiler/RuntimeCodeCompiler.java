@@ -11,11 +11,11 @@ import java.net.URLClassLoader;
 import java.util.Objects;
 import java.util.Optional;
 
-public class DynamicCodeCompiler {
+public class RuntimeCodeCompiler implements CodeCompiler {
     private final JavaCompiler compiler;
     private final File generatedRoot;
 
-    public DynamicCodeCompiler() {
+    public RuntimeCodeCompiler() {
         this.compiler = ToolProvider.getSystemJavaCompiler();
         if (Objects.isNull(this.compiler)) {
             System.err.println("No Java compiler found. Are you using a JDK?");
@@ -30,6 +30,7 @@ public class DynamicCodeCompiler {
         }
     }
 
+    @Override
     public boolean dumpGeneratedCode(final String generatedCode, final String className) {
         final File javaFile = new File(this.generatedRoot, className + ".java");
         try (final FileWriter writer = new FileWriter(javaFile)) {
@@ -40,11 +41,13 @@ public class DynamicCodeCompiler {
         }
     }
 
+    @Override
     public boolean compileGeneratedCode(final String className) {
         final File javaFile = new File(this.generatedRoot, className + ".java");
         return compiler.run(null, null, null, javaFile.getPath()) == 0;
     }
 
+    @Override
     public Optional<Object> loadCompiledCode(final String classPath) {
         try (final URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { this.generatedRoot.toURI().toURL() })) {
             final Class<?> clazz = Class.forName(classPath, true, classLoader);
@@ -65,13 +68,7 @@ public class DynamicCodeCompiler {
         }
     }
 
-    /**
-     * Checks whether the given code is valid java code and can actually compile.
-     *
-     * @param classname
-     * @param code
-     * @return true if the code is valid java (and can compile), false otherwise
-     */
+    @Override
     public boolean canCompile(final String classname, final String code) {
         final InMemoryJavaSource source = new InMemoryJavaSource(classname, code);
         final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
