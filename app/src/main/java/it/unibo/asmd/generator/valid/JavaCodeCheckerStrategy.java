@@ -1,5 +1,6 @@
 package it.unibo.asmd.generator.valid;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -13,5 +14,5 @@ public interface JavaCodeCheckerStrategy {
      * @param code the input java code
      * @return {{@link Optional<String>}} empty if provided code compiles and does not produce errors, the yielded error otherwise.
      */
-    Optional<Iterable<String>> checkJavaCode(String className, String code);
+    Optional<List<String>> checkJavaCode(String className, String code);
 }
