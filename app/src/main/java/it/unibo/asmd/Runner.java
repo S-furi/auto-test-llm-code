@@ -1,7 +1,6 @@
 package it.unibo.asmd;
 
-import it.unibo.asmd.compiler.DynamicCodeCompiler;
-import it.unibo.asmd.generator.LLMCodeGenerator;
+import it.unibo.asmd.compiler.RuntimeCodeCompiler;
 import it.unibo.asmd.generator.LLMCodeGeneratorFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -14,7 +13,7 @@ public class Runner {
         final var generatedCode = generator.generateCodeFromPrompt();
         System.out.println("Response:\n" + generatedCode);
 
-        final var codeCompiler = new DynamicCodeCompiler();
+        final var codeCompiler = new RuntimeCodeCompiler();
         codeCompiler.dumpGeneratedCode(generatedCode, "Onner");
         codeCompiler.compileGeneratedCode("Onner");
         final var obj = codeCompiler.loadCompiledCode("Onner");
