@@ -2,7 +2,7 @@
 
 A simple java application for evaluating simple LLM-generated Java code, leveraging Ollama and Java's Reflections API.
 
-The project AIMs in producing a simple interface in order to give a set of specification in natural langauge for a software component, represented
+The project aims in producing a simple interface in order to give a set of specification in natural langauge for a software component, represented
 as a single Java class (by now only single files are supported). Generated code is checked by means of the Java compiler, assessing
 code correctness both syntactivally and semantically. Once code is correct, it could be dumped in the FileSystem.
 Another component is responsible of generating Unit tests by levearing JUnit5 as a test suite. The generated code is given to
