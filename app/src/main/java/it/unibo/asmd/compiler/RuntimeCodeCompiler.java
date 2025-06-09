@@ -4,10 +4,7 @@ import javax.tools.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.net.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,6 +12,8 @@ import java.util.Optional;
 public class RuntimeCodeCompiler implements CodeCompiler {
     private final JavaCompiler compiler;
     private final File generatedRoot;
+
+    private final URLClassLoader classLoader;
 
     public RuntimeCodeCompiler() {
         this.compiler = ToolProvider.getSystemJavaCompiler();
@@ -26,7 +25,12 @@ public class RuntimeCodeCompiler implements CodeCompiler {
         try {
             this.generatedRoot = new File(Objects.requireNonNull(this.getClass().getClassLoader().getResource("generated")).toURI());
             if (!this.generatedRoot.isDirectory()) throw new IllegalStateException("No /resources/generated directory found!");
-        } catch (final URISyntaxException e) {
+            this.classLoader = URLClassLoader.newInstance(
+                    new URL[] { this.generatedRoot.toURI().toURL() },
+                    this.getClass().getClassLoader()
+            );
+
+        } catch (final URISyntaxException | MalformedURLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -45,13 +49,25 @@ public class RuntimeCodeCompiler implements CodeCompiler {
     @Override
     public boolean compileGeneratedCode(final String className) {
         final File javaFile = new File(this.generatedRoot, className + ".java");
-        return compiler.run(null, null, null, javaFile.getPath()) == 0;
+        List<String> options = List.of(
+                "-classpath", generatedRoot.getAbsolutePath() + File.pathSeparator + System.getProperty("java.class.path")
+        );
+
+        return compiler.getTask(
+                null,
+                null,
+                null,
+                options,
+                null,
+                compiler.getStandardFileManager(null, null, null)
+                        .getJavaFileObjectsFromFiles(List.of(javaFile))
+        ).call();
     }
 
     @Override
     public Optional<Object> loadCompiledCode(final String classPath) {
-        try (final URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { this.generatedRoot.toURI().toURL() })) {
-            final Class<?> clazz = Class.forName(classPath, true, classLoader);
+        try {
+            final Class<?> clazz = Class.forName(classPath, true, this.classLoader);
             final Object obj = clazz.getDeclaredConstructor().newInstance();
             return Optional.of(obj);
         } catch (final ClassCastException ignored) {
@@ -72,9 +88,14 @@ public class RuntimeCodeCompiler implements CodeCompiler {
         final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
 
         try (final StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null)) {
-            final JavaCompiler.CompilationTask task = compiler.getTask(
-                    null, fileManager, diagnostics, null, null, java.util.Collections.singletonList(source)
+            final List<String> options = List.of(
+                    "-classpath", generatedRoot.getAbsolutePath() + File.pathSeparator + System.getProperty("java.class.path")
             );
+
+            final JavaCompiler.CompilationTask task = compiler.getTask(
+                    null, fileManager, diagnostics, options, null, List.of(source)
+            );
+
             final var success = task.call();
             if (!success) {
                 diagnostics.getDiagnostics().forEach(d ->
