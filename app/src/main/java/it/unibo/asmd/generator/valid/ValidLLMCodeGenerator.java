@@ -7,7 +7,7 @@ import it.unibo.asmd.generator.LLMCodeGenerator;
  * checking its validity upon creation.
  */
 public interface ValidLLMCodeGenerator extends LLMCodeGenerator {
-    String generateValidCodeFromPrompt();
+    String generateValidCodeFromPrompt(String className);
 
     /**
      * Set the maximum tries this agents tries to retrieve a solution.

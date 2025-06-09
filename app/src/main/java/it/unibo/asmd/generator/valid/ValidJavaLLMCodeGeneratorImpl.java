@@ -18,11 +18,11 @@ public class ValidJavaLLMCodeGeneratorImpl implements ValidLLMCodeGenerator {
     }
 
     @Override
-    public String generateValidCodeFromPrompt() {
+    public String generateValidCodeFromPrompt(final String className) {
         int tries = 0;
         do {
             final var code = this.delegate.generateCodeFromPrompt();
-            final var errors = this.javaCheckStrategy.checkJavaCode(code);
+            final var errors = this.javaCheckStrategy.checkJavaCode(className, code);
             if (errors.isEmpty()) {
                 return code;
             }

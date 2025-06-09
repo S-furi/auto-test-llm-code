@@ -13,5 +13,5 @@ public interface JavaCodeCheckerStrategy {
      * @param code the input java code
      * @return {{@link Optional<String>}} empty if provided code compiles and does not produce errors, the yielded error otherwise.
      */
-    Optional<Iterable<String>> checkJavaCode(String code);
+    Optional<Iterable<String>> checkJavaCode(String className, String code);
 }
