@@ -1,7 +1,7 @@
-package it.unibo.asmd.compiler;
+package it.unibo.asmd.generator;
 
-import it.unibo.asmd.generator.JavaLLMCodeGenerator;
-import it.unibo.asmd.generator.LLMCodeGeneratorFactory;
+import it.unibo.asmd.compiler.CodeCompiler;
+import it.unibo.asmd.compiler.RuntimeCodeCompiler;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
