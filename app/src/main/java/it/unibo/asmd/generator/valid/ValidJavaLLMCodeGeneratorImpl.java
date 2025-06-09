@@ -3,6 +3,7 @@ package it.unibo.asmd.generator.valid;
 import it.unibo.asmd.generator.JavaLLMCodeGenerator;
 import it.unibo.asmd.generator.LLMCodeGenerator;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ValidJavaLLMCodeGeneratorImpl implements ValidLLMCodeGenerator {
@@ -22,7 +23,7 @@ public class ValidJavaLLMCodeGeneratorImpl implements ValidLLMCodeGenerator {
         int tries = 0;
         do {
             final var code = this.delegate.generateCodeFromPrompt();
-            final var errors = this.javaCheckStrategy.checkJavaCode(className, code);
+            final var errors = this.validateCode(className, code);
             if (errors.isEmpty()) {
                 return code;
             }
@@ -43,6 +44,11 @@ public class ValidJavaLLMCodeGeneratorImpl implements ValidLLMCodeGenerator {
         /* this should ensure that the LLM just outputs code that should run, avoiding
          * producing undesirable stuff like re-proposing the error and later the solution. */
         this.delegate.setPostPrompt();
+    }
+
+    @Override
+    public Optional<List<String>> validateCode(String className, String code) {
+        return this.javaCheckStrategy.checkJavaCode(className, code);
     }
 
     @Override
