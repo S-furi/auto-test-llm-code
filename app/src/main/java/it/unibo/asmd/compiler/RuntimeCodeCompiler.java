@@ -56,17 +56,14 @@ public class RuntimeCodeCompiler implements CodeCompiler {
             return Optional.of(obj);
         } catch (final ClassCastException ignored) {
             System.err.println("Failed casting the loaded object");
-            return Optional.empty();
         } catch (final ClassNotFoundException ignored) {
             System.err.println("Class not found");
-            return Optional.empty();
         } catch (final NoSuchMethodException ignored) {
             System.err.println("No constructor was found for class.");
-            return Optional.empty();
         } catch (final Exception e) {
             e.printStackTrace();
-            return Optional.empty();
         }
+        return Optional.empty();
     }
 
     @Override
