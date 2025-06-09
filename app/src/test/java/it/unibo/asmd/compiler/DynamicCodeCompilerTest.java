@@ -42,7 +42,7 @@ public class DynamicCodeCompilerTest {
 
     @Test
     void testCanCompile() {
-        assertTrue(this.compiler.canCompile(this.className, this.testCode));
-        assertFalse(this.compiler.canCompile(this.className, "fun addOne(x: Int): Int = x + 1"));
+        assertTrue(this.compiler.canCompile(this.className, this.testCode).isEmpty());
+        assertTrue(this.compiler.canCompile(this.className, "fun addOne(x: Int): Int = x + 1").isPresent());
     }
 }
