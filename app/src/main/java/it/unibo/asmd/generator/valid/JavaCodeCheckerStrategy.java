@@ -1,5 +1,7 @@
 package it.unibo.asmd.generator.valid;
 
+import java.util.Optional;
+
 /**
  * Functional interface that encapsulate the logic
  * to assess whether a given string is valid java code
@@ -9,7 +11,7 @@ public interface JavaCodeCheckerStrategy {
     /**
      *
      * @param code the input java code
-     * @return true if provided java code is correct (i.e. it compiles), false otherwise.
+     * @return {{@link Optional<String>}} empty if provided code compiles and does not produce errors, the yielded error otherwise.
      */
-    boolean checkJavaCode(String code);
+    Optional<Iterable<String>> checkJavaCode(String code);
 }
