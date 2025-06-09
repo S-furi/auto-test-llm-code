@@ -1,10 +1,10 @@
 package it.unibo.asmd.compiler;
 
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
+import javax.tools.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -62,6 +62,48 @@ public class DynamicCodeCompiler {
         } catch (final Exception e) {
             e.printStackTrace();
             return Optional.empty();
+        }
+    }
+
+    /**
+     * Checks whether the given code is valid java code and can actually compile.
+     *
+     * @param classname
+     * @param code
+     * @return true if the code is valid java (and can compile), false otherwise
+     */
+    public boolean canCompile(final String classname, final String code) {
+        final InMemoryJavaSource source = new InMemoryJavaSource(classname, code);
+        final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
+
+        try (final StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null)) {
+            final JavaCompiler.CompilationTask task = compiler.getTask(
+                    null, fileManager, diagnostics, null, null, java.util.Collections.singletonList(source)
+            );
+            final var success = task.call();
+            if (!success) {
+                diagnostics.getDiagnostics().forEach(d ->
+                        System.err.println("Error on line " + d.getLineNumber() + ": " + d.getMessage(null))
+                );
+            }
+            return success;
+        } catch (final IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private static class InMemoryJavaSource extends SimpleJavaFileObject {
+        private final String code;
+
+        public InMemoryJavaSource(final String className, final String code) {
+            super(URI.create("string:///" + className.replace('.', '/') + Kind.SOURCE.extension), Kind.SOURCE);
+            this.code = code;
+        }
+
+        @Override
+        public CharSequence getCharContent(boolean ignoreEncodingErrors) {
+            return code;
         }
     }
 }
