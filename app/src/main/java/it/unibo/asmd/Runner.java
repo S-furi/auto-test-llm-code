@@ -4,25 +4,35 @@ import it.unibo.asmd.compiler.RuntimeCodeCompiler;
 import it.unibo.asmd.generator.LLMCodeGeneratorFactory;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Optional;
 
 public class Runner {
-    public static void main(String[] args) {
+    private static String getSimplePrompt() {
         final var generator = LLMCodeGeneratorFactory.createQwenLLMJavaCodeGenerator();
         final var testCodeRequirements = "Write a class named \"Onner\" that has an empty constructor and a method named \"getOne\" that returns 1.";
         generator.setPrompt(testCodeRequirements);
         final var generatedCode = generator.generateCodeFromPrompt();
         System.out.println("Response:\n" + generatedCode);
+        return generatedCode;
+    }
 
+    public static Object compileGeneratedCode(final String generatedCode, final String className) {
         final var codeCompiler = new RuntimeCodeCompiler();
-        codeCompiler.dumpGeneratedCode(generatedCode, "Onner");
-        codeCompiler.compileGeneratedCode("Onner");
-        final var obj = codeCompiler.loadCompiledCode("Onner");
+        codeCompiler.dumpGeneratedCode(generatedCode, className);
+        codeCompiler.compileGeneratedCode(className);
+        final var obj = codeCompiler.loadCompiledCode(className);
         if (obj.isEmpty()) {
             System.out.println("No compiled code, an error occurred...");
             System.exit(1);
         }
+        return obj.get();
+    }
+
+    public static void main(String[] args) {
+        final var generatedCode = getSimplePrompt();
+
         try {
-            final var onner = obj.get();
+            final var onner = compileGeneratedCode(generatedCode, "Onner");
             final var getOne = onner.getClass().getDeclaredMethod("getOne");
             final int res = (int)getOne.invoke(onner);
             if (res != 1) {
