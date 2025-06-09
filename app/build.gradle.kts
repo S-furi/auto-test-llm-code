@@ -7,8 +7,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.junit.jupiter)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    implementation(libs.junit.jupiter)
+    implementation("org.apiguardian:apiguardian-api:1.1.2")
+    implementation("org.junit.platform:junit-platform-launcher")
     implementation(libs.guava)
     implementation(libs.bundles.lc4j)
 }
