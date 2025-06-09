@@ -1,5 +1,10 @@
 package it.unibo.asmd.generator;
 
+import it.unibo.asmd.compiler.CodeCompiler;
+import it.unibo.asmd.generator.valid.RuntimeCompilerJavaCheckStrategy;
+import it.unibo.asmd.generator.valid.ValidJavaLLMCodeGeneratorImpl;
+import it.unibo.asmd.generator.valid.ValidLLMCodeGenerator;
+
 public class LLMCodeGeneratorFactory {
     public static LLMCodeGenerator createSmollLLMCodeGenerator() {
         return new LLMCodeGeneratorBuilder()
@@ -29,5 +34,15 @@ public class LLMCodeGeneratorFactory {
                 .withDefaultPrePrompt()
                 .ofLanguage(LLMCodeGeneratorBuilder.Language.JAVA)
                 .build();
+    }
+
+    public static ValidLLMCodeGenerator createValidLLMCodeGenerator(
+            final JavaLLMCodeGenerator codeGenerator,
+            final CodeCompiler compiler
+    ) {
+        return new ValidJavaLLMCodeGeneratorImpl(
+                RuntimeCompilerJavaCheckStrategy.getStrategy(compiler),
+                codeGenerator
+        );
     }
 }
