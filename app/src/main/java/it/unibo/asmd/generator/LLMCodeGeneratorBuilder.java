@@ -61,7 +61,7 @@ public class LLMCodeGeneratorBuilder {
 
         if (this.lang.isPresent()) {
             switch (this.lang.get()) {
-                case JAVA -> this.codeGenerator = Optional.of(new JavaLLMCodeGenerator(this.defaultPrePrompt, this.agent.get()));
+                case JAVA -> this.codeGenerator = Optional.of(new JavaLLMCodeGeneratorImpl(this.defaultPrePrompt, this.agent.get()));
                 default -> this.codeGenerator = Optional.of(new LLMCodeGeneratorImpl(this.defaultPrePrompt, this.agent.get()));
             }
         }
