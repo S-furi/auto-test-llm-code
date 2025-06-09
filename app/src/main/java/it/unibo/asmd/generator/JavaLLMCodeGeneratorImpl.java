@@ -4,6 +4,7 @@ import it.unibo.asmd.generator.prompting.PromptBasedAgent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 
 public class JavaLLMCodeGeneratorImpl implements JavaLLMCodeGenerator {
@@ -56,5 +57,15 @@ public class JavaLLMCodeGeneratorImpl implements JavaLLMCodeGenerator {
         }
         // TODO: check which approach is best to fuse code blocks
         return String.join("\n", extractedBlocks);
+    }
+
+    @Override
+    public void clearPrompt() {
+        this.codeGenerator.clearPrompt();
+    }
+
+    @Override
+    public Optional<String> getPrompt() {
+        return this.codeGenerator.getPrompt();
     }
 }

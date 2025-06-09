@@ -4,12 +4,14 @@ import it.unibo.asmd.generator.prompting.PromptBasedAgent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Objects;
 
 public class LLMCodeGeneratorImpl implements LLMCodeGenerator {
     private final List<String> prompts = new ArrayList<>();
+    private Optional<String> userPrompt = Optional.empty();
     private PromptBasedAgent agent;
     protected final Pattern codeBlockPattern = Pattern.compile("```(\\w+)?\\s*([\\s\\S]*?)```");
 
@@ -33,7 +35,7 @@ public class LLMCodeGeneratorImpl implements LLMCodeGenerator {
     @Override
     public void setPrompt(final String prompt) {
         this.prompts.add(prompt);
-
+        this.userPrompt = Optional.of(prompt);
     }
 
     @Override
@@ -71,5 +73,16 @@ public class LLMCodeGeneratorImpl implements LLMCodeGenerator {
         }
 
         return extractedBlocks.get(0);
+    }
+
+    @Override
+    public void clearPrompt() {
+        this.prompts.clear();
+        this.userPrompt = Optional.empty();
+    }
+
+    @Override
+    public Optional<String> getPrompt() {
+        return this.userPrompt;
     }
 }
