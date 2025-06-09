@@ -1,5 +1,8 @@
 package it.unibo.asmd.compiler;
 
+import javax.tools.Diagnostic;
+import javax.tools.JavaFileObject;
+import java.util.List;
 import java.util.Optional;
 
 public interface CodeCompiler {
@@ -31,7 +34,7 @@ public interface CodeCompiler {
      *
      * @param classname the provided java source class name.
      * @param code the java code to be checked.
-     * @return true if the code is valid java (and can compile), false otherwise
+     * @return {{@link Optional<String>}} empty if the code is valid java (and can compile), a list of errors otherwise
      */
-    boolean canCompile(String classname, String code);
+    public Optional<List<Diagnostic<? extends JavaFileObject>>> canCompile(final String classname, final String code);
 }

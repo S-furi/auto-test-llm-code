@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -69,7 +70,7 @@ public class RuntimeCodeCompiler implements CodeCompiler {
     }
 
     @Override
-    public boolean canCompile(final String classname, final String code) {
+    public Optional<List<Diagnostic<? extends JavaFileObject>>> canCompile(final String classname, final String code) {
         final InMemoryJavaSource source = new InMemoryJavaSource(classname, code);
         final DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<>();
 
@@ -83,10 +84,10 @@ public class RuntimeCodeCompiler implements CodeCompiler {
                         System.err.println("Error on line " + d.getLineNumber() + ": " + d.getMessage(null))
                 );
             }
-            return success;
+            return success ? Optional.empty() : Optional.of(diagnostics.getDiagnostics());
         } catch (final IOException e) {
             e.printStackTrace();
-            return false;
+            return Optional.of(diagnostics.getDiagnostics());
         }
     }
 
