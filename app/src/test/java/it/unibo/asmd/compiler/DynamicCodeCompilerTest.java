@@ -11,11 +11,11 @@ public class DynamicCodeCompilerTest {
     private final String testCode = "public class Test { public Test() { } public int getOne() { return 1; } }";
     private final String className = "Test";
 
-    private DynamicCodeCompiler compiler;
+    private CodeCompiler compiler;
 
     @BeforeEach
     public void setUp() {
-        this.compiler = new DynamicCodeCompiler();
+        this.compiler = new RuntimeCodeCompiler();
     }
 
     @Test
