@@ -15,8 +15,8 @@ import java.io.PrintWriter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GenerateCodeAndUnitTest {
-    private final String className = "Onner";
-    private final String testCodeRequirements = "Write a class named \"Onner\" that has an empty constructor and a method named \"getOne\" that returns 1.";
+    private final String className = "Counter";
+    private final String testCodeRequirements = "Write a class named \"Counter\" that has an empty constructor and two methods: \"void inc()\" which increments the counter value, \"void dec()\" which decrement the value and, \"void reset()\" which reset the counter to 0 and a \"int getValue()\" method that return current counter value.";
     private final CodeCompiler codeCompiler = new RuntimeCodeCompiler();
     private final ValidLLMCodeGenerator codeGenerator = LLMCodeGeneratorFactory.createValidLLMCodeGenerator(
             (JavaLLMCodeGenerator) LLMCodeGeneratorFactory.createQwenLLMJavaCodeGenerator(),
