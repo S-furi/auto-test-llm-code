@@ -23,7 +23,7 @@ public class PromptBasedAgent {
                 .logRequests(false)
                 .logResponses(true)
                 .modelName(modelName)
-                .numPredict(128)
+                .numPredict(256)
                 .build();
 
         Objects.requireNonNull(model, "Model is null");
