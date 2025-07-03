@@ -27,6 +27,12 @@ public interface CodeCompiler {
      */
     boolean compileGeneratedCode(String className);
 
+    /**
+     * Loads the compiled code from the given classPath.
+     *
+     * @param classPath the path to the compiled class file, typically in the "/generated" directory.
+     * @return {{@link Optional<Object>}} containing the loaded class instance if successful, empty otherwise.
+     */
     Optional<Object> loadCompiledCode(String classPath);
 
     /**
@@ -36,5 +42,5 @@ public interface CodeCompiler {
      * @param code the java code to be checked.
      * @return {{@link Optional<String>}} empty if the code is valid java (and can compile), a list of errors otherwise
      */
-    public Optional<List<Diagnostic<? extends JavaFileObject>>> canCompile(final String classname, final String code);
+    Optional<List<Diagnostic<? extends JavaFileObject>>> canCompile(final String classname, final String code);
 }

@@ -17,5 +17,10 @@ public interface LLMTestGenerator {
      */
     void setSourceCode(File sourceCode, String className);
 
+    /**
+     * Generate the test code for the given source code.
+     *
+     * @return the generated test code as a string.
+     */
     String generateTest();
 }

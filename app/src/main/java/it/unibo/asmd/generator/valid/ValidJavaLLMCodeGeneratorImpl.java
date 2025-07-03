@@ -38,7 +38,7 @@ public class ValidJavaLLMCodeGeneratorImpl implements ValidLLMCodeGenerator {
     private void buildFixPrompt(final String userPrompt, final Iterable<String> errors) {
         final String errorsPrompt = String.join("\n- ", errors);
         this.delegate.setAdditionalPrePrompt("Consider the following set of errors: " + errorsPrompt);
-        this.delegate.setAdditionalPrePrompt("Given the set of errors, fix the following code:\n");
+        this.delegate.setAdditionalPrePrompt("Given the set of errors, try to implement the following component:\n");
         this.delegate.setPrompt(userPrompt);
 
         /* this should ensure that the LLM just outputs code that should run, avoiding

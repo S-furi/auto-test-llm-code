@@ -36,7 +36,7 @@ public class LLMUnitTestGenerator implements LLMTestGenerator {
     @Override
     public String generateTest() {
         final var prePrompt = "Consider the following Java class called `" + this.className + "`:\n" + this.code;
-        final var postPrompt = "\n Given the above class, write a unit test suite using JUnit5, including also all necessary imports and keep in mind good TDD practices, especially keep tets simple, quick and one assertion per test.";
+        final var postPrompt = "\n Given the above class, write a unit test suite using JUnit5, including also all necessary imports and keep in mind good TDD practices, especially keep tests simple, quick and one assertion per test.";
 
         this.codeGenerator.setPrompt(prePrompt + postPrompt);
         this.codeGenerator.setPostPrompt(); // this should help generating only (one) code block in the response
