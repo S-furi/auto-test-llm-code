@@ -24,6 +24,7 @@ public class PromptBasedAgent {
                 .logResponses(true)
                 .modelName(modelName)
                 .numPredict(256)
+                .temperature(0.2)
                 .build();
 
         Objects.requireNonNull(model, "Model is null");
